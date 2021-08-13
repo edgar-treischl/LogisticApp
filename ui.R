@@ -9,6 +9,10 @@
 
 library(shiny)
 library(waiter)
+library(bslib)
+
+
+
 
 # Define UI for application that draws a histogram
 shinyUI(fixedPage(
@@ -16,6 +20,11 @@ shinyUI(fixedPage(
     
     use_waiter(),
     waiter_show_on_load(html = spin_flower()),
+    
+    
+    
+
+
     
     # Application title
     #titlePanel("Old Faithful Geyser Data"),
@@ -28,7 +37,7 @@ shinyUI(fixedPage(
                                    includeMarkdown("txt/start.md"),
                                    div(style="display: inline-block; width: 150px;",
                                        actionButton("code", "Source Code", 
-                                                    onclick ="window.open('https://github.com/edgartreischl/logistic-regression-app', '_blank')", 
+                                                    onclick ="window.open('https://github.com/edgar-treischl/logistic-regression-app', '_blank')", 
                                                     icon = icon("github"))),
                                    div(style="display: inline-block; width: 150px;",
                                        actionButton("download", "Download", 
@@ -36,11 +45,11 @@ shinyUI(fixedPage(
                                                     icon = icon("file")))
                             ),
                             column(width = 6,
-                                   tabsetPanel(type = "tabs",
-                                               tabPanel("Survival",  
+                                   tabsetPanel(type = "tabs", 
+                                               tabPanel("Survival",
                                                         h4("Survival of the Titanic:"),  
                                                         plotOutput("survivedplot")),
-                                               tabPanel("Sex",  
+                                               tabPanel("Sex", 
                                                         h4("Survival by Sex:"),
                                                         plotOutput("sexplot1")),
                                                tabPanel("Class",  
