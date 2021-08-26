@@ -236,7 +236,7 @@ or7 <- tidy(model_call("m7"))%>%
   scale_color_manual(values = c("#2C3E50"))
 
 
-install.packages("e1071")
+#install.packages("e1071")
 
 
 
