@@ -10,19 +10,15 @@
 library(shiny)
 library(ggplot2)
 library(titanic)
-#library(ggbeeswarm)
 library(viridis)
 library(thematic)
 library(broom)
-library(tidyverse)
+#library(tidyverse)
 library(ggalluvial)
-#library(caret)
-#library(ggmosaic)
-#library(precrec)
 library(waiter)
+library(tibble)
 
 source("utils.R")
-
 
 
 #Data Prep#############
@@ -43,12 +39,36 @@ df <- expand.grid(Sex = c("female"),
                   Age = c(18),
                   Pclass = 3)
 
+input <- c("shiny", "ggplot2", "titanic", "viridis", "thematic",
+           "broom", "tidyverse", "ggalluvial", "waiter", "bslib",
+           "ggbeeswarm", "caret", "ggmosaic", "precrec", "dplyr",
+           "tidyr", "tibble")
+
+check <- lapply(input, check_installed)
+
+check <- dplyr::bind_rows(check)
+
+#check <- purrr::map_df(input, check_installed)
+
+allinstalled <- length(check$packages)
+plist <- check$packages
+
+validExamplesMsg <-paste0(
+  "The following packages need to be installed: '",
+  paste(plist, collapse = "', '"),
+  "'")
+
+if (allinstalled > 0) {
+  stop(print(validExamplesMsg))
+}
+
 
 
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
-    thematic::thematic_shiny()
+  
+  thematic::thematic_shiny()
     Sys.sleep(3) # do something that takes time
     waiter_hide()
     
@@ -122,7 +142,7 @@ shinyServer(function(input, output) {
         x <- 10 + rnorm(250, 3, 3)+ rnorm(250, 10, 3)*y
         
         data <- data.frame(x, y) %>%
-            as.tibble
+            as.tibble()
         
         ggplot(data, aes(x = x, y = y)) + 
             geom_point(color = "gray")+
@@ -138,7 +158,7 @@ shinyServer(function(input, output) {
         x <- 10 + rnorm(250, 3, 3)+ rnorm(250, 10, 3)*y
         
         data <- data.frame(x, y) %>%
-            as.tibble
+            tibble::as.tibble()
         
         if (input$boolmethod == TRUE) {
             ggplot(data, aes(x= x, y = y)) + 

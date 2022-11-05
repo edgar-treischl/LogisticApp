@@ -13,10 +13,10 @@ library(bslib)
 
 
 
-
 # Define UI for application that draws a histogram
 shinyUI(fixedPage(
-    theme = bslib::bs_theme(bootswatch = "flatly"),
+  
+  theme = bslib::bs_theme(bootswatch = "flatly"),
     
     use_waiter(),
     waiter_show_on_load(html = spin_flower()),

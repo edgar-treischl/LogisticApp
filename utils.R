@@ -4,11 +4,28 @@ library(ggbeeswarm)
 library(viridis)
 library(thematic)
 library(broom)
-library(tidyverse)
+#library(tidyverse)
 library(ggalluvial)
 library(caret)
 library(ggmosaic)
 library(precrec)
+library(dplyr)
+library(tidyr)
+
+check_installed <- function(x) {
+  p <- installed.packages()
+  haves <- p[,1]
+  df <- tibble::tibble(packages = haves)
+  
+  needs <- x
+  df_filter <- dplyr::filter(df, packages==needs)
+  
+  df2 <- tibble::tibble(packages = needs)
+  
+  list_packages <- dplyr::setdiff(df2, df_filter)
+  list_packages
+  
+}
 
 #Data Prep#############
 train_df<- titanic::titanic_train
@@ -30,20 +47,20 @@ glm_fit <- glm(Survived ~ Sex + Age + Pclass , family = binomial(link = 'logit')
 tita<- titanic::titanic_train
 
 
-tita<- tita %>% 
-  select(Age, Sex, Survived, Pclass)%>% 
+tita<- tita |> 
+  select(Age, Sex, Survived, Pclass)  %>% 
   mutate(
     Adults = case_when(
       Age >= 0 & Age < 14    ~ "Kids",
       Age >= 14 & Age < 100   ~ "Adult",
       TRUE                   ~ "NA")
-  ) %>%
+  )  |> 
   mutate(Adults = na_if(Adults, "NA"))
 
 
-tita<- tita %>% 
-  group_by(Sex, Survived, Pclass, Adults) %>% 
-  drop_na() %>% 
+tita<- tita  %>% 
+  group_by(Sex, Survived, Pclass, Adults)  %>% 
+  drop_na()  %>% 
   count(Sex) 
 
 
@@ -137,11 +154,11 @@ model_call <- function(type) {
 
 #OR Barplots
 
-or1 <- tidy(model_call("m1"))%>% 
-  mutate(oddsRatio = exp(estimate))%>%
-  select(term, estimate, oddsRatio)%>%
-  mutate(term=replace(term, term=="(Intercept)", NA)) %>% 
-  drop_na()%>% 
+or1 <- tidy(model_call("m1"))  %>% 
+  mutate(oddsRatio = exp(estimate))  %>% 
+  select(term, estimate, oddsRatio)  %>% 
+  mutate(term=replace(term, term=="(Intercept)", NA))  %>% 
+  drop_na()  %>% 
   ggplot(aes(x = term, y= oddsRatio)) + 
   geom_bar(stat="identity")+
   geom_text(aes(label=round(oddsRatio, 3)), vjust=-1, size = 6)+
@@ -150,12 +167,14 @@ or1 <- tidy(model_call("m1"))%>%
   theme_bw(base_size = 16)+
   expand_limits(y=c(0,2))+
   scale_color_manual(values = c("#2C3E50"))
+
+
 
 or2 <- tidy(model_call("m2"))%>% 
-  mutate(oddsRatio = exp(estimate))%>%
-  select(term, estimate, oddsRatio)%>%
-  mutate(term=replace(term, term=="(Intercept)", NA)) %>% 
-  drop_na()%>% 
+  mutate(oddsRatio = exp(estimate)) %>% 
+  select(term, estimate, oddsRatio) %>% 
+  mutate(term=replace(term, term=="(Intercept)", NA))  %>%  
+  drop_na() %>%  
   ggplot(aes(x = term, y= oddsRatio)) + 
   geom_bar(stat="identity")+
   geom_text(aes(label=round(oddsRatio, 3)), vjust=-1, size = 6)+
@@ -165,11 +184,11 @@ or2 <- tidy(model_call("m2"))%>%
   expand_limits(y=c(0,2))+
   scale_color_manual(values = c("#2C3E50"))
 
-or3 <- tidy(model_call("m3"))%>% 
-  mutate(oddsRatio = exp(estimate))%>%
-  select(term, estimate, oddsRatio)%>%
-  mutate(term=replace(term, term=="(Intercept)", NA)) %>% 
-  drop_na()%>% 
+or3 <- tidy(model_call("m3")) %>%  
+  mutate(oddsRatio = exp(estimate)) %>% 
+  select(term, estimate, oddsRatio) %>% 
+  mutate(term=replace(term, term=="(Intercept)", NA))  %>%  
+  drop_na() %>%  
   ggplot(aes(x = term, y= oddsRatio)) + 
   geom_bar(stat="identity")+
   geom_text(aes(label=round(oddsRatio, 3)), vjust=-1, size = 6)+
@@ -179,11 +198,11 @@ or3 <- tidy(model_call("m3"))%>%
   expand_limits(y=c(0,2))+
   scale_color_manual(values = c("#2C3E50"))
 
-or4 <- tidy(model_call("m4"))%>% 
-  mutate(oddsRatio = exp(estimate))%>%
-  select(term, estimate, oddsRatio)%>%
-  mutate(term=replace(term, term=="(Intercept)", NA)) %>% 
-  drop_na()%>% 
+or4 <- tidy(model_call("m4")) %>%  
+  mutate(oddsRatio = exp(estimate)) %>% 
+  select(term, estimate, oddsRatio) %>% 
+  mutate(term=replace(term, term=="(Intercept)", NA))  %>%  
+  drop_na() %>%  
   ggplot(aes(x = term, y= oddsRatio)) + 
   geom_bar(stat="identity")+
   geom_text(aes(label=round(oddsRatio, 3)), vjust=-1, size = 6)+
@@ -193,11 +212,11 @@ or4 <- tidy(model_call("m4"))%>%
   expand_limits(y=c(0,2))+
   scale_color_manual(values = c("#2C3E50"))
 
-or5 <- tidy(model_call("m5"))%>% 
-  mutate(oddsRatio = exp(estimate))%>%
-  select(term, estimate, oddsRatio)%>%
-  mutate(term=replace(term, term=="(Intercept)", NA)) %>% 
-  drop_na()%>% 
+or5 <- tidy(model_call("m5")) %>%  
+  mutate(oddsRatio = exp(estimate)) %>% 
+  select(term, estimate, oddsRatio) %>% 
+  mutate(term=replace(term, term=="(Intercept)", NA))  %>%  
+  drop_na() %>%  
   ggplot(aes(x = term, y= oddsRatio)) + 
   geom_bar(stat="identity")+
   geom_text(aes(label=round(oddsRatio, 3)), vjust=-1, size = 6)+
@@ -207,11 +226,11 @@ or5 <- tidy(model_call("m5"))%>%
   expand_limits(y=c(0,2))+
   scale_color_manual(values = c("#2C3E50"))
 
-or6 <- tidy(model_call("m6"))%>% 
-  mutate(oddsRatio = exp(estimate))%>%
-  select(term, estimate, oddsRatio)%>%
-  mutate(term=replace(term, term=="(Intercept)", NA)) %>% 
-  drop_na()%>% 
+or6 <- tidy(model_call("m6")) %>%  
+  mutate(oddsRatio = exp(estimate)) %>% 
+  select(term, estimate, oddsRatio) %>% 
+  mutate(term=replace(term, term=="(Intercept)", NA))  %>%  
+  drop_na() %>%  
   ggplot(aes(x = term, y= oddsRatio)) + 
   geom_bar(stat="identity")+
   geom_text(aes(label=round(oddsRatio, 3)), vjust=-1, size = 6)+
@@ -221,11 +240,11 @@ or6 <- tidy(model_call("m6"))%>%
   expand_limits(y=c(0,2))+
   scale_color_manual(values = c("#2C3E50"))
 
-or7 <- tidy(model_call("m7"))%>% 
-  mutate(oddsRatio = exp(estimate))%>%
-  select(term, estimate, oddsRatio)%>%
-  mutate(term=replace(term, term=="(Intercept)", NA)) %>% 
-  drop_na()%>% 
+or7 <- tidy(model_call("m7")) %>%  
+  mutate(oddsRatio = exp(estimate)) %>% 
+  select(term, estimate, oddsRatio) %>% 
+  mutate(term=replace(term, term=="(Intercept)", NA))  %>%  
+  drop_na() %>%  
   ggplot(aes(x = term, y= oddsRatio)) + 
   geom_bar(stat="identity")+
   geom_text(aes(label=round(oddsRatio, 3)), vjust=-1, size = 6)+
@@ -247,7 +266,7 @@ pred_surv <- (predict(glm_fit, train_df, type = 'response') > 0.5) * 1
 
 #diese Prognose speichern wir zusammen mit der PassengerID
 df_pred <- data.frame('PassengerId' = train_df$PassengerId, 'True' =  train_df$Survived, 
-                      'Predicted' = pred_surv) %>% drop_na()
+                      'Predicted' = pred_surv)  %>%  drop_na()
 
 
 df_pred$Predicted <- factor(df_pred$Predicted, 
@@ -257,9 +276,9 @@ df_pred$Predicted <- factor(df_pred$Predicted,
 cmMatrix<- confusionMatrix(df_pred$Predicted, df_pred$True,  positive = "Survived")
 
 
-label_df <- df_pred %>% 
-  group_by(True, Predicted) %>% 
-  count() %>% 
+label_df <- df_pred  %>%  
+  group_by(True, Predicted)  %>%  
+  count()  %>%  
   arrange(True)
 
 fcukit <- data.frame(
@@ -271,10 +290,10 @@ fcukit <- data.frame(
 
 
 
-sample_size = df_pred %>% group_by(True) %>% summarize(num=n())
+sample_size = df_pred  %>%  group_by(True)  %>%  summarize(num=n())
 
-df_pred <- df_pred %>%
-  left_join(sample_size) %>%
+df_pred <- df_pred  %>% 
+  left_join(sample_size)  %>% 
   mutate(True = paste0(True, "\n", "n=", num))
 
 pred_plot <- ggplot(df_pred) + 
