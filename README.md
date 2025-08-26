@@ -4,10 +4,10 @@
 # Logistic Regression App
 
 This Shiny app allows you to explore the Titanic passenger data and
-analyze survival outcomes through engaging visualizations and logistic
-regression models. By using the app, you will deepen your understanding
-of how different factors like sex, age, and passenger class influenced
-survival chances on the Titanic.
+analyze survival outcomes through visualizations and logistic regression
+models. By using the app, you will deepen your understanding of how
+different factors like sex, age, and passenger class influenced survival
+chances on the Titanic.
 
 ### 1. Exploring Data Patterns
 
@@ -35,8 +35,7 @@ survival chances on the Titanic.
 - Understand **ROC curves**, which measure the model’s ability to
   discriminate between survivors and non-survivors.
 
-Ready to dive in? Start exploring the Titanic data and uncover the
-stories behind the numbers! You can inspect the app on my
+Ready to dive in? You can inspect the app on my
 [website](http://edgar-treischl.de/projects) or run the app via:
 
 ``` r

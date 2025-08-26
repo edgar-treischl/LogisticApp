@@ -11,15 +11,15 @@ ui <- shinyUI(fixedPage(
              tabPanel("00 Start", icon = icon("play"),
                       fixedRow(
                         column(width = 6,
-                               includeMarkdown("./txt/start.md"),
+                               includeMarkdown("www/txt/start.md"),
                                div(style="display: inline-block; width: 150px;",
                                    actionButton("code", "Source Code", 
-                                                onclick ="window.open('https://github.com/edgar-treischl/logistic-regression-app', '_blank')", 
-                                                icon = icon("github"))),
-                               div(style="display: inline-block; width: 150px;",
-                                   actionButton("download", "Download", 
-                                                onclick ="window.open('http://edgar-treischl.de/wp-content/uploads/2021/05/report.pdf')", 
-                                                icon = icon("file")))
+                                                onclick ="window.open('https://github.com/edgar-treischl/LogisticApp', '_blank')", 
+                                                icon = icon("github")))
+                               # div(style="display: inline-block; width: 150px;",
+                               #     actionButton("download", "Download", 
+                               #                  onclick ="window.open('http://edgar-treischl.de/wp-content/uploads/2021/05/report.pdf')", 
+                               #                  icon = icon("file")))
                         ),
                         column(width = 6,
                                tabsetPanel(type = "tabs", 
@@ -42,7 +42,7 @@ ui <- shinyUI(fixedPage(
              tabPanel("01 Idea", icon = icon("lightbulb"),
                       fixedRow(
                         column(width = 6,
-                               includeMarkdown("./txt/idea.md"),
+                               includeMarkdown("www/txt/idea.md"),
                                h4("Insert the logit in the scatterplot:"),
                                checkboxInput("boolmethod", "Logit!", 
                                              value = FALSE)
@@ -58,7 +58,7 @@ ui <- shinyUI(fixedPage(
              tabPanel("02 Variables", icon = icon("chart-pie"),
                       fixedRow(
                         column(width = 6,
-                               includeMarkdown("./txt/variables.md")
+                               includeMarkdown("www/txt/variables.md")
                         ),
                         column(width = 6,
                                HTML(paste(h4("Add a variable:"))),
@@ -73,7 +73,7 @@ ui <- shinyUI(fixedPage(
              tabPanel("03 Model", icon = icon("robot"),
                       fixedRow(
                         column(width = 5,
-                               includeMarkdown("txt/model.md")
+                               includeMarkdown("www/txt/model.md")
                         ),
                         column(width = 7,
                                h4("Logistic regression results:"),
@@ -91,7 +91,7 @@ ui <- shinyUI(fixedPage(
              tabPanel("04 Odds Ratio", icon = icon("otter"),
                       fixedRow(
                         column(width = 6,
-                               includeMarkdown("./txt/odds.md"),
+                               includeMarkdown("www/txt/odds.md"),
                         ),
                         column(width = 6,
                                tabsetPanel(type = "tabs",
@@ -106,7 +106,7 @@ ui <- shinyUI(fixedPage(
              ),
              tabPanel("05 Prediction", icon = icon("magic"),
                       fixedRow(
-                        includeMarkdown("./txt/prediction.md"),
+                        includeMarkdown("www/txt/prediction.md"),
                         column(width = 5,
                                radioButtons("psex", h4("Sex"),
                                             choices = list("Male" = "male", "Female" = "female"), 
@@ -132,7 +132,7 @@ ui <- shinyUI(fixedPage(
              tabPanel("06 Performance", icon = icon("hat-wizard"),
                       fixedRow(
                         column(width = 6,
-                               includeMarkdown("./txt/performance.md"),
+                               includeMarkdown("www/txt/performance.md"),
                         ),
                         column(width = 6,
                                h4("Classification:"),
@@ -157,14 +157,14 @@ server <- function(input, output, session) {
   # -- Survival Plots --
   output$survivedplot <- renderPlot({
     ggplot(train_df, aes(x = Survived)) +
-      geom_bar(aes(y = (..count..) / sum(..count..)), fill = c("#999999")) +
+      geom_bar(aes(y = after_stat(count) / sum(after_stat(count))), fill = "#999999")+
       ylab("Percent") +
       theme_bw(base_size = 18)
   })
   
   output$sexplot1 <- renderPlot({
     ggplot(train_df, aes(x = Sex, fill = Survived)) +
-      geom_bar(aes(y = (..count..) / sum(..count..))) +
+      geom_bar(aes(y = after_stat(count) / sum(after_stat(count))))+
       ylab("Percent") +
       scale_fill_manual(values = c("#009E73", "#E69F00")) +
       theme_bw(base_size = 18) +
@@ -182,7 +182,7 @@ server <- function(input, output, session) {
   
   output$classplot <- renderPlot({
     ggplot(train_df, aes(x = Pclass, fill = Survived)) +
-      geom_bar(aes(y = (..count..) / sum(..count..))) +
+      geom_bar(aes(y = after_stat(count) / sum(after_stat(count))))+
       ylab("Percent") +
       scale_fill_manual(values = c("#009E73", "#E69F00")) +
       theme_bw(base_size = 18) +
