@@ -40,7 +40,7 @@ df <- expand.grid(Sex = c("female"),
                   Pclass = 3)
 
 input <- c("shiny", "ggplot2", "titanic", "viridis", "thematic",
-           "broom", "tidyverse", "ggalluvial", "waiter", "bslib",
+           "broom", "ggalluvial", "waiter", "bslib",
            "ggbeeswarm", "caret", "ggmosaic", "precrec", "dplyr",
            "tidyr", "tibble")
 
@@ -69,10 +69,6 @@ if (allinstalled > 0) {
 shinyServer(function(input, output) {
   
   thematic::thematic_shiny()
-    Sys.sleep(3) # do something that takes time
-    waiter_hide()
-    
-    
     #Surivivalplots#####
     output$survivedplot <- renderPlot({
         ggplot(train_df, aes(x= Survived)) + 

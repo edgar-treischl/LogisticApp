@@ -44,7 +44,7 @@ glm_fit <- glm(Survived ~ Sex + Age + Pclass , family = binomial(link = 'logit')
 
 
 #Titanic data prep for alluvial#######
-tita<- titanic::titanic_train
+tita <- titanic::titanic_train
 
 
 tita<- tita |> 
