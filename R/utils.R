@@ -28,6 +28,10 @@ glm_fit <- glm(Survived ~ Sex + Age + as.numeric(Pclass),
                family = binomial(link = 'logit'), data = train_df)
 
 
+#coef(glm_fit)
+
+
+
 # --- 2. Alluvial Plot Data ---
 
 tita <- titanic::titanic_train %>%
@@ -175,16 +179,17 @@ pred_plot <- ggplot(df_pred) +
   scale_fill_manual(values = c("#E69F00", "#009E73")) +
   geom_label(data = fcukit,
              aes(x = x, y = y, label = paste0(text2, ": ", text)),
-             size = 5) +
+             size = 4) +
   ylab("Predicted") +
   xlab("Observed") +
-  theme_minimal(base_size = 18) +
+  theme_minimal(base_size = 16) +
   labs(caption = paste0("Sensitivity: ", round(cmMatrix$byClass["Sensitivity"], 2),
                         ", Specificity: ", round(cmMatrix$byClass["Specificity"], 2))) +
   theme(
-    plot.caption = element_text(color = "black", size = 18, hjust = 0, face = "bold"),
+    plot.caption = element_text(color = "black", size = 14, hjust = 0, face = "bold"),
     legend.position = "none"
   )
+
 
 
 # Generate ROC curve
@@ -197,7 +202,7 @@ precrec_obj <- evalmod(scores = df_roc$predict, labels = df_roc$Survived)
 
 roc_curve <- autoplot(precrec_obj, "ROC") +
   theme_minimal(base_size = 18) +
-  geom_line(size = 1, color = "#E69F00") +
+  geom_line(linewidth = 1, color = "#E69F00") +
   geom_vline(xintercept = 0, size = 1, color = "black") +
   geom_hline(yintercept = 1, size = 1, color = "black") +
   geom_abline(linetype = "dashed", size = 0.8, color = "darkgray") +
