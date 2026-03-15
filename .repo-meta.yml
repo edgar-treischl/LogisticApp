@@ -1,0 +1,16 @@
+name: LogisticApp
+description: Shiny App to Learn Logistic Regression
+status: active
+dev_path: apps
+role: project
+tags:
+  - apps
+language: R
+setup:
+  - Rscript app.R
+env: []
+services: []
+depends_on: []
+workspace: []
+update_strategy: []
+priority: []
